@@ -1,6 +1,30 @@
 import UIKit
 
+class Stack {
+    
+    var ll: LinkedList
+//    var top: Node?
+    init(top: Node?) {
+        self.ll = LinkedList(head: top)
+    }
+    
+    // add a node to the top of the stack
+    func push(_ node: Node) {
+        ll.insertNode(node, at: 1)
+    }
+    
+    // remove and return the topmost node from the stack
+    func pop() -> Node? {
+        let deletedNode = ll.getNode(atPosition: 1)
+        if let value = deletedNode?.value {
+            ll.deleteNode(withValue: value)
+        }
+        return deletedNode
+    }
+}
+
 class Node {
+    
     var value: Int
     var next: Node?
     
@@ -10,6 +34,7 @@ class Node {
 }
 
 class LinkedList {
+    
     var head: Node?
     
     init(head: Node?) {
@@ -17,8 +42,9 @@ class LinkedList {
     }
     
     func append(_ node: Node) {
+        
         guard head != nil else {
-            head  = node
+            head = node
             return
         }
         
@@ -26,7 +52,6 @@ class LinkedList {
         while let _ = current?.next {
             current = current?.next
         }
-        
         current?.next = node
     }
     
@@ -61,7 +86,6 @@ class LinkedList {
                 if counter == position - 1 {
                     node.next = current?.next
                     current?.next = node
-                    break
                 }
                 current = current?.next
                 counter += 1
@@ -92,29 +116,23 @@ class LinkedList {
 }
 
 // Test cases
+// Set up some nodes
+let n1 = Node(value: 1)
+let n2 = Node(value: 2)
+let n3 = Node(value: 3)
+let n4 = Node(value: 4)
 
- // Set up some Nodes
- let n1 = Node(value: 1)
- let n2 = Node(value: 2)
- let n3 = Node(value: 3)
- let n4 = Node(value: 4)
- 
- // Start setting up a LinkedList
- let ll = LinkedList(head: n1)
- ll.append(n2)
- ll.append(n3)
- 
- // Test getNode(atPosition:)
- print(ll.head!.next!.next!.value) // Should print 3
- print(ll.getNode(atPosition: 3)!.value) // Should also print 3
- 
- // Test insert
- ll.insertNode(n4, at: 3)
- print(ll.getNode(atPosition: 3)!.value) // Should print 4 now
- 
- // Test delete(withValue:)
- ll.deleteNode(withValue: 1)
- print(ll.getNode(atPosition: 1)!.value) // Should print 2 now
- print(ll.getNode(atPosition: 2)!.value) // Should print 4 now
- print(ll.getNode(atPosition: 3)!.value) // Should print 3
+// Start setting up a Stack
+let stack = Stack(top: n1)
+
+// Test stack functionality
+
+ stack.push(n2)
+ stack.push(n3)
+ print(stack.pop()!.value) // Should be 3
+ print(stack.pop()!.value) // Should be 2
+ print(stack.pop()!.value) // Should be 1
+ print(stack.pop()?.value) // Should be nil
+ stack.push(n4)
+ print(stack.pop()!.value) // Should be 4
 
